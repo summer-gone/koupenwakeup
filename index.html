@@ -228,9 +228,8 @@ imagesToPreload.forEach(src => {
     img.src = src;
 });
 
-// --- Existing Game State Variables & References Continue Below ---
-const startScreen = document.getElementById("startScreen");
-
+// --- Element References ---
+// FIXED: Removed the duplicate 'const startScreen' declaration that was crashing the script
 const startScreen = document.getElementById("startScreen");
 const gameScreen = document.getElementById("gameScreen");
 const startButton = document.getElementById("startButton");
@@ -258,6 +257,12 @@ startButton.addEventListener("click", () => {
 
     startSound.currentTime = 0;
     startSound.play().catch(() => {});
+
+    // Audio Preloading: Force the browser to buffer gameplay audio now that user interaction occurred
+    const gameSfx = document.getElementById("gameSfx");
+    const winSound = document.getElementById("winSound");
+    if (gameSfx) gameSfx.load();
+    if (winSound) winSound.load();
 
     setTimeout(() => {
         startButton.classList.remove("clicked");
